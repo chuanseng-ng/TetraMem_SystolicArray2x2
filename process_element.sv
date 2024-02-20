@@ -1,5 +1,5 @@
 module ProcessingElement #(
-    parameter DATA_WIDTH = 4.
+    parameter DATA_WIDTH = 4,
     parameter ACC_WIDTH  = 9,
     parameter SIZE       = 2
 )(
@@ -73,6 +73,8 @@ module ProcessingElement #(
             end else if (temp_data_count == SIZE+1 && shift_en) begin
                 prev_weight_in      <= buff_weight_in;
                 temp_buff_weight_in <= weight_in;
+
+                temp_data_count <= 'd2; // Modift to match SIZE parameter
             end else begin
                 if (shift_en) begin
                     temp_data_count <= temp_data_count + 'b1;

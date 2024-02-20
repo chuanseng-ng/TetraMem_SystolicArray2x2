@@ -1,9 +1,9 @@
 module SystolicArray2x2 #(
     parameter DATA_WIDTH = 4,
     parameter ACC_WIDTH  = 9,
-    parameter LSIZE      = 2.
+    parameter LSIZE      = 2,
     parameter RSIZE      = 2
-){
+)(
     input clk,
     input rstn,
     input in_valid,
@@ -11,7 +11,7 @@ module SystolicArray2x2 #(
     input [DATA_WIDTH-1:0] b00, b01, b10, b11,
     output reg out_valid,
     output reg [ACC_WIDTH-1:0] c00, c01, c10, c11
-};
+);
 
     // Intermediate signals for partial sums, data propagation, and valid signals
     wire [ACC_WIDTH-1:0] part_sum00, part_sum01, part_sum10, part_sum11;
@@ -19,7 +19,7 @@ module SystolicArray2x2 #(
     wire valid_pe00, valid_pe01, valid_pe10, valid_pe11;
 
     reg [DATA_WIDTH-1:0] data_pe00, data_pe01, data_pe10, data_pe11;
-    reg [ACC_WIDTH-1:0]  temp_c00, temp_c01, temp_c10, temp_c11;
+    reg [ACC_WIDTH-1:0]  temp_c00, temp_c01, temp_c10, temp_c11, temp_c00_2;
     reg [1:0]            cycle_count = 'd0;
     reg [2:0]            cout_count  = 'd0;
     reg                  cout_check  = 'd0;

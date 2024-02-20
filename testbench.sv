@@ -21,15 +21,15 @@ module SystolicArray2x2_tb();
     initial begin
         $display("Systolic Array 2x2 TB");
 
-        $fsdbDumpfile("SystolicArray2x2,fsdb");
-        $fsdbDumpvars(0, SystolicArray2x2_tb);
+        $fsdbDumpfile("SystolicArray2x2.fsdb");
+        $fsdbDumpvars();
 
         // Initialize inputs
         clk      = 0;
         rstn     = 0;
         in_valid = 0;
-        a00 = 0, a01 = 0, a10 = 0, a11 = 0;
-        b00 = 0, b01 = 0, b10 = 0, b11 = 0;
+        a00 = 4'b0000; a01 = 4'b0000; a10 = 4'b0000; a11 = 4'b0000;
+        b00 = 4'b0000; b01 = 4'b0000; b10 = 4'b0000; b11 = 4'b0000;
 
         // Wait for global reset
         #95;
@@ -38,14 +38,14 @@ module SystolicArray2x2_tb();
         // 0th clock cycle
         // Start shift weights in - 1st set
         #10;
-        a00 = 0, a01 = 0, a10 = 0, a11 = 0;
-        b00 = 0, b01 = 2, b10 = 0, b11 = 0;
+        a00 = 4'b0000; a01 = 4'b0000; a10 = 4'b0000; a11 = 4'b0000;
+        b00 = 4'b0000; b01 = 4'b0010; b10 = 4'b0000; b11 = 4'b0000;
         $display("c00: %d, c01: %d, c10: %d, c11: %d, clock cycle 0", c00, c01, c10, c11);
 
         // 1st clock cycle
         #10;
-        a00 = 0, a01 = 0, a10 = 0, a11 = 0;
-        b00 = 4, b01 = 0, b10 = 6, b11 = 0;
+        a00 = 4'b0000; a01 = 4'b0000; a10 = 4'b0000; a11 = 4'b0000;
+        b00 = 4'b0100; b01 = 4'b0000; b10 = 4'b0110; b11 = 4'b0000;
         $display("c00: %d, c01: %d, c10: %d, c11: %d, clock cycle 1", c00, c01, c10, c11);
 
         // 2nd clock cycle
@@ -54,14 +54,14 @@ module SystolicArray2x2_tb();
         // Start shift weights in - 2nd set
         #10;
         in_valid = 1;
-        a00 = 4, a01 = 0, a10 = 0, a11 = 0;
-        b00 = 0, b01 = 4, b10 = 0, b11 = 8;
+        a00 = 4'b0100; a01 = 4'b0000; a10 = 4'b0000; a11 = 4'b0000;
+        b00 = 4'b0000; b01 = 4'b0100; b10 = 4'b0000; b11 = 4'b1000;
         $display("c00: %d, c01: %d, c10: %d, c11: %d, clock cycle 2", c00, c01, c10, c11);
 
         // 3rd clock cycle
         #10;
-        a00 = 0, a01 = 3, a10 = 12, a11 = 0;
-        b00 = 7, b01 = 0, b10 = 8,  b11 = 0;
+        a00 = 4'b0000; a01 = 4'b0011; a10 = 4'b1100; a11 = 4'b0000;
+        b00 = 4'b0111; b01 = 4'b0000; b10 = 4'b1000; b11 = 4'b0000;
         $display("c00: %d, c01: %d, c10: %d, c11: %d, clock cycle 3", c00, c01, c10, c11);  
 
         // 4th clock cycle
@@ -70,14 +70,14 @@ module SystolicArray2x2_tb();
         // Start shift data in    - 2nd set
         // Start shift weights in - 3rd set
         #10;
-        a00 = 12, a01 = 0, a10 = 0, a11 = 4;
-        b00 = 0,  b01 = 1, b10 = 0, b11 = 1;
+        a00 = 4'b1100; a01 = 4'b0000; a10 = 4'b0000; a11 = 4'b0100;
+        b00 = 4'b0000; b01 = 4'b0001; b10 = 4'b0000; b11 = 4'b0001;
         $display("c00: %d, c01: %d, c10: %d, c11: %d, clock cycle 4", c00, c01, c10, c11);
 
         // 5th clock cycle
         #10;
-        a00 = 0, a01 = 14, a10 = 10, a11 = 0;
-        b00 = 3, b01 = 0,  b10 = 5,  b11 = 0;
+        a00 = 4'b0000; a01 = 4'b1110; a10 = 4'b1010; a11 = 4'b0000;
+        b00 = 4'b0011; b01 = 4'b0000; b10 = 4'b0101; b11 = 4'b0000;
         $display("c00: %d, c01: %d, c10: %d, c11: %d, clock cycle 5", c00, c01, c10, c11);
 
         // 6th clock cycle
@@ -86,42 +86,42 @@ module SystolicArray2x2_tb();
         // Shift last weight in - 3rd set
         // Start shift data in  - 3rd set
         #10;
-        a00 = 2, a01 = 0, a10 = 0, a11 = 1;
-        b00 = 0, b01 = 0, b10 = 0, b11 = 7;
+        a00 = 4'b0010; a01 = 4'b0000; a10 = 4'b0000; a11 = 4'b0001;
+        b00 = 4'b0000; b01 = 4'b0000; b10 = 4'b0000; b11 = 4'b0111;
         $display("c00: %d, c01: %d, c10: %d, c11: %d, clock cycle 6", c00, c01, c10, c11);
 
         // 7th clock cycle
         #10;
-        a00 = 0, a01 = 3, a10 = 4, a11 = 0;
-        b00 = 0, b01 = 0, b10 = 0, b11 = 0;
+        a00 = 4'b0000; a01 = 4'b0011; a10 = 4'b0100; a11 = 4'b0000;
+        b00 = 4'b0000; b01 = 4'b0000; b10 = 4'b0000; b11 = 4'b0000;
         $display("c00: %d, c01: %d, c10: %d, c11: %d, clock cycle 7", c00, c01, c10, c11);
 
         // 8th clock cycle
         // Check output of 2nd set
         // Shift last data in - 3rd set
         #10;
-        a00 = 0, a01 = 0, a10 = 0, a11 = 9;
-        b00 = 0, b01 = 0, b10 = 0, b11 = 0;
+        a00 = 4'b0000; a01 = 4'b0000; a10 = 4'b0000; a11 = 4'b1001;
+        b00 = 4'b0000; b01 = 4'b0000; b10 = 4'b0000; b11 = 4'b0000;
         $display("c00: %d, c01: %d, c10: %d, c11: %d, clock cycle 8", c00, c01, c10, c11);
 
         // 9th clock cycle
         #10;
-        a00 = 0, a01 = 0, a10 = 0, a11 = 0;
-        b00 = 0, b01 = 0, b10 = 0, b11 = 0;
+        a00 = 4'b0000; a01 = 4'b0000; a10 = 4'b0000; a11 = 4'b0000;
+        b00 = 4'b0000; b01 = 4'b0000; b10 = 4'b0000; b11 = 4'b0000;
         $display("c00: %d, c01: %d, c10: %d, c11: %d, clock cycle 9", c00, c01, c10, c11);
 
         // 10th clock cycle
         // Check output of 3rd set
         #10;
         in_valid = 0;
-        a00 = 0, a01 = 0, a10 = 0, a11 = 0;
-        b00 = 0, b01 = 0, b10 = 0, b11 = 0;
+        a00 = 4'b0000; a01 = 4'b0000; a10 = 4'b0000; a11 = 4'b0000;
+        b00 = 4'b0000; b01 = 4'b0000; b10 = 4'b0000; b11 = 4'b0000;
         $display("c00: %d, c01: %d, c10: %d, c11: %d, clock cycle 10", c00, c01, c10, c11);   
 
         // 11th clock cycle
         #10;
-        a00 = 0, a01 = 0, a10 = 0, a11 = 0;
-        b00 = 0, b01 = 0, b10 = 0, b11 = 0;
+        a00 = 4'b0000; a01 = 4'b0000; a10 = 4'b0000; a11 = 4'b0000;
+        b00 = 4'b0000; b01 = 4'b0000; b10 = 4'b0000; b11 = 4'b0000;
         $display("c00: %d, c01: %d, c10: %d, c11: %d, clock cycle 11", c00, c01, c10, c11);
 
         // Finish simulation

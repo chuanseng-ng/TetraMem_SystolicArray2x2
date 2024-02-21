@@ -109,18 +109,10 @@ module SystolicArray2x2 #(
         end
     end
 
-    // Control logic for output valid signal
     always @(posedge clk or negedge rstn) begin
         if (~rstn) begin
-            out_valid <= 'd0;
-        end else begin
-            // Output is valid on cycle after last PE has valid output
-            out_valid <= valid_pe11;
-        end
-    end
-
-    always @(posedge in_valid or negedge rstn) begin
-        if (~rstn) begin
+            delayed_in_valid <= 'd0;
+        end else if (!in_valid) begin
             delayed_in_valid <= 'd0;
         end else begin
             delayed_in_valid <= 'd1;
@@ -161,6 +153,12 @@ module SystolicArray2x2 #(
                 c11        <= temp_c11;
                 temp_c00_2 <= temp_c10;
                 cout_count <= 'd2;
+
+                if (valid_pe01 && valid_pe11) begin
+                    out_valid <= 'd1;
+                end else begin
+                    out_valid <= 'd0;
+                end
             end
         end
     end

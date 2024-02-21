@@ -135,6 +135,7 @@ module SystolicArray2x2 #(
             temp_c10   <= 'd0;
             temp_c11   <= 'd0;
             temp_c00_2 <= 'd0;
+            out_valid  <= 'd0;
         end else if (delayed_in_valid || out_valid) begin
             if (cout_count == 0) begin
                 cout_count <= cout_count + 'b1;
@@ -149,6 +150,7 @@ module SystolicArray2x2 #(
                 c10        <= temp_c10;
                 c01        <= temp_c11;
                 cout_count <= cout_count + 'b1;
+                out_valid  <= 'd0;
             end else if (cout_count == 3) begin
                 c11        <= temp_c11;
                 temp_c00_2 <= temp_c10;

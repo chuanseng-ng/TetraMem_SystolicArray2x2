@@ -14,6 +14,7 @@ module ProcessingElement #(
     output reg [ACC_WIDTH-1:0] part_sum_out
 );
 
+    // Intermediate signals for weight buffer, product/sum buffer and counter
     reg [DATA_WIDTH-1:0] prev_weight_in, buff_weight_in, temp_buff_weight_in;
     reg [ACC_WIDTH-1:0]  product, prev_sum_in;
     reg [SIZE-1:0]       data_count      = 'd0;
@@ -21,6 +22,7 @@ module ProcessingElement #(
 
     reg valid_product;
 
+    // Performs multiplication followed by addition (Blocking assignment)
     always @(posedge clk or negedge rstn) begin
         if (~rstn) begin
             assign product       = 'd0;
@@ -35,6 +37,9 @@ module ProcessingElement #(
         end
     end
 
+    // Shift weight into buffer if current operation is not completed
+    // Delay data_count by 1 cycle if shift_en == 1
+    // Shift previous PE output in if != 0
     always @(posedge clk or negedge rstn) begin
         if (~rstn) begin
             prev_weight_in      <= 'd0;
@@ -62,7 +67,13 @@ module ProcessingElement #(
         if (part_sum_in) begin
             prev_sum_in <= part_sum_in;
         end
+    end
 
+    // shift_en == 0 -> Shift stored weight into calculation if data_count == SIZE+1
+    // shift_en == 1 -> Shift stored weight into calculation if temp_data_count == SIZE+1
+    // shift_en == 1 -> Shift input weight into secondary buffer if data_count == SIZE+1
+    // shift_en == 1 -> Shift temp_data_count to data_count to maintain sync
+    always @(posedge clk or negedge rstn) begin
         if (in_valid) begin
             if (data_count == SIZE+1 && !shift_en) begin
                 prev_weight_in      <= buff_weight_in;
@@ -93,6 +104,7 @@ module ProcessingElement #(
         end
     end
 
+    // out_valid will always take valid_product value (Blocking assignment)
     always @* begin
         if (~rstn) begin
             assign out_valid = 'b0;

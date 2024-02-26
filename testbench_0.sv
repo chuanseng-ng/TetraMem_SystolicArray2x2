@@ -21,8 +21,8 @@ module SystolicArray2x2_tb();
     initial begin
         $display("Systolic Array 2x2 TB");
 
-        $fsdbDumpfile("SystolicArray2x2.fsdb");
-        $fsdbDumpvars();
+        $dumpfile("SystolicArray2x2.vcd");
+        $dumpvars();
 
         // Initialize inputs
         clk      = 0;

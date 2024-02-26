@@ -1,5 +1,3 @@
-// Code your testbench here
-// or browse Examples
 `timescale 1ns/1ns
 
 module SystolicArray2x2_tb();
@@ -23,7 +21,7 @@ module SystolicArray2x2_tb();
     initial begin
         $display("Systolic Array 2x2 TB");
 
-      	$dumpfile("SystolicArray2x2.vcd");
+        $dumpfile("SystolicArray2x2.vcd");
         $dumpvars();
 
         // Initialize inputs
@@ -41,13 +39,13 @@ module SystolicArray2x2_tb();
         // Start shift weights in - 1st set
         #10;
         a00 = 4'b0000; a01 = 4'b0000; a10 = 4'b0000; a11 = 4'b0000;
-        b00 = 4'b0000; b01 = 4'b1010; b10 = 4'b0000; b11 = 4'b0000;
+        b00 = 4'b0000; b01 = 4'b0010; b10 = 4'b0000; b11 = 4'b0000;
         $display("c00: %d, c01: %d, c10: %d, c11: %d, clock cycle 0", c00, c01, c10, c11);
 
         // 1st clock cycle
         #10;
         a00 = 4'b0000; a01 = 4'b0000; a10 = 4'b0000; a11 = 4'b0000;
-        b00 = 4'b0110; b01 = 4'b0000; b10 = 4'b1110; b11 = 4'b0000;
+        b00 = 4'b0100; b01 = 4'b0000; b10 = 4'b0110; b11 = 4'b0000;
         $display("c00: %d, c01: %d, c10: %d, c11: %d, clock cycle 1", c00, c01, c10, c11);
 
         // 2nd clock cycle
@@ -56,14 +54,14 @@ module SystolicArray2x2_tb();
         // Start shift weights in - 2nd set
         #10;
         in_valid = 1;
-        a00 = 4'b0101; a01 = 4'b0000; a10 = 4'b0000; a11 = 4'b0000;
-        b00 = 4'b0000; b01 = 4'b0010; b10 = 4'b0000; b11 = 4'b1001;
+        a00 = 4'b0100; a01 = 4'b0000; a10 = 4'b0000; a11 = 4'b0000;
+        b00 = 4'b0000; b01 = 4'b0100; b10 = 4'b0000; b11 = 4'b1000;
         $display("c00: %d, c01: %d, c10: %d, c11: %d, clock cycle 2", c00, c01, c10, c11);
 
         // 3rd clock cycle
         #10;
-        a00 = 4'b0000; a01 = 4'b0001; a10 = 4'b1101; a11 = 4'b0000;
-        b00 = 4'b1111; b01 = 4'b0000; b10 = 4'b1010; b11 = 4'b0000;
+        a00 = 4'b0000; a01 = 4'b0011; a10 = 4'b1100; a11 = 4'b0000;
+        b00 = 4'b0111; b01 = 4'b0000; b10 = 4'b1000; b11 = 4'b0000;
         $display("c00: %d, c01: %d, c10: %d, c11: %d, clock cycle 3", c00, c01, c10, c11);  
 
         // 4th clock cycle
@@ -72,14 +70,14 @@ module SystolicArray2x2_tb();
         // Start shift data in    - 2nd set
         // Start shift weights in - 3rd set
         #10;
-        a00 = 4'b1110; a01 = 4'b0000; a10 = 4'b0000; a11 = 4'b0110;
-        b00 = 4'b0000; b01 = 4'b1000; b10 = 4'b0000; b11 = 4'b1001;
+        a00 = 4'b1100; a01 = 4'b0000; a10 = 4'b0000; a11 = 4'b0100;
+        b00 = 4'b0000; b01 = 4'b0001; b10 = 4'b0000; b11 = 4'b0001;
         $display("c00: %d, c01: %d, c10: %d, c11: %d, clock cycle 4", c00, c01, c10, c11);
 
         // 5th clock cycle
         #10;
-        a00 = 4'b0000; a01 = 4'b1111; a10 = 4'b1001; a11 = 4'b0000;
-        b00 = 4'b1011; b01 = 4'b0000; b10 = 4'b0111; b11 = 4'b0000;
+        a00 = 4'b0000; a01 = 4'b1110; a10 = 4'b1010; a11 = 4'b0000;
+        b00 = 4'b0011; b01 = 4'b0000; b10 = 4'b0101; b11 = 4'b0000;
         $display("c00: %d, c01: %d, c10: %d, c11: %d, clock cycle 5", c00, c01, c10, c11);
 
         // 6th clock cycle
@@ -88,13 +86,13 @@ module SystolicArray2x2_tb();
         // Shift last weight in - 3rd set
         // Start shift data in  - 3rd set
         #10;
-        a00 = 4'b0011; a01 = 4'b0000; a10 = 4'b0000; a11 = 4'b0101;
-        b00 = 4'b0000; b01 = 4'b0000; b10 = 4'b0000; b11 = 4'b0110;
+        a00 = 4'b0010; a01 = 4'b0000; a10 = 4'b0000; a11 = 4'b0001;
+        b00 = 4'b0000; b01 = 4'b0000; b10 = 4'b0000; b11 = 4'b0111;
         $display("c00: %d, c01: %d, c10: %d, c11: %d, clock cycle 6", c00, c01, c10, c11);
 
         // 7th clock cycle
         #10;
-        a00 = 4'b0000; a01 = 4'b0010; a10 = 4'b1100; a11 = 4'b0000;
+        a00 = 4'b0000; a01 = 4'b0011; a10 = 4'b0100; a11 = 4'b0000;
         b00 = 4'b0000; b01 = 4'b0000; b10 = 4'b0000; b11 = 4'b0000;
         $display("c00: %d, c01: %d, c10: %d, c11: %d, clock cycle 7", c00, c01, c10, c11);
 
@@ -102,7 +100,7 @@ module SystolicArray2x2_tb();
         // Check output of 2nd set
         // Shift last data in - 3rd set
         #10;
-        a00 = 4'b0000; a01 = 4'b0000; a10 = 4'b0000; a11 = 4'b1011;
+        a00 = 4'b0000; a01 = 4'b0000; a10 = 4'b0000; a11 = 4'b1001;
         b00 = 4'b0000; b01 = 4'b0000; b10 = 4'b0000; b11 = 4'b0000;
         $display("c00: %d, c01: %d, c10: %d, c11: %d, clock cycle 8", c00, c01, c10, c11);
 

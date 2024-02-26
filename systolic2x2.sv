@@ -92,8 +92,8 @@ module SystolicArray2x2 #(
                 cycle_count <= cycle_count + 'b1;
             end else if (cycle_count == 1) begin
                 data_pe01   <= data_pe00;
-                data_pe00   <= a10;
-                data_pe10   <= a01;
+                data_pe00   <= a01;
+                data_pe10   <= a10;
                 cycle_count <= cycle_count + 'b1;
             end else if (cycle_count == 2) begin
                 data_pe11   <= data_pe10;
@@ -104,8 +104,8 @@ module SystolicArray2x2 #(
             end else if (cycle_count == 3) begin
                 data_pe11   <= data_pe10;
                 data_pe01   <= data_pe00;
-                data_pe00   <= a10;
-                data_pe10   <= a01;
+                data_pe00   <= a01;
+                data_pe10   <= a10;
                 cycle_count <= 'd2;
             end
         end

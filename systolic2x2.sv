@@ -13,6 +13,7 @@ module SystolicArray2x2 #(
     output reg [ACC_WIDTH-1:0] c00, c01, c10, c11
 );
 
+    // TODO: Consider use define to control if loopback should be enabled
     // Intermediate signals for partial sums, data propagation, and valid signals
     wire [ACC_WIDTH-1:0] part_sum00, part_sum01, part_sum10, part_sum11;
     wire [ACC_WIDTH-1:0] dummy_part_sum;
@@ -24,6 +25,8 @@ module SystolicArray2x2 #(
     reg [2:0]            cout_count  = 'd0;
     reg                  cout_check  = 'd0;
     reg                  delayed_in_valid;
+    reg [1:0]            a_data_empty_count;
+    reg                  a_data_invalid;
 
     assign dummy_part_sum = 'd0;
 
@@ -35,7 +38,8 @@ module SystolicArray2x2 #(
         .in_valid(in_valid),
         .data_in(data_pe00), // a00 or a10
         .weight_in(b00),
-        .part_sum_in(dummy_part_sum),
+        .part_sum_in(part_sum10),
+        //.part_sum_in(dummy_part_sum),
         .shift_en(1'b0),
         .out_valid(valid_pe00),
         .part_sum_out(part_sum00)
@@ -47,7 +51,8 @@ module SystolicArray2x2 #(
         .in_valid(valid_pe00),
         .data_in(data_pe01), // a00 or a10
         .weight_in(b01),
-        .part_sum_in(dummy_part_sum),
+        .part_sum_in(part_sum11),
+        //.part_sum_in(dummy_part_sum),
         .shift_en(1'b0),
         .out_valid(valid_pe01),
         .part_sum_out(part_sum01)
@@ -111,14 +116,33 @@ module SystolicArray2x2 #(
         end
     end
 
+    // Increment counter if a00 data == 'd0 to check if data stream is going to end
+    always @(posedge clk or negedge rstn) begin
+        if (~rstn) begin
+            a_data_invalid     <= 'd0;
+            a_data_empty_count <= 'd0;
+        end else if (delayed_in_valid) begin
+            if (a_data_empty_count == 'd2) begin
+                a_data_invalid <= 'b1;
+            end else if (a00 == 'd0) begin
+                a_data_empty_count <= a_data_empty_count + 'b1;
+            end else begin
+                a_data_empty_count <= 'd0;
+            end
+        end else begin
+            a_data_invalid     <= 'd0;
+            a_data_empty_count <= 'd0;
+        end
+    end
+
     // Create a 1-cycle delayed in_valid signal for output shifting use
     always @(posedge clk or negedge rstn) begin
         if (~rstn) begin
             delayed_in_valid <= 'd0;
-        end else if (!in_valid) begin
-            delayed_in_valid <= 'd0;
-        end else begin
+        end else if (in_valid) begin
             delayed_in_valid <= 'd1;
+        end else begin
+            delayed_in_valid <= 'd0;
         end
     end
 
@@ -163,7 +187,7 @@ module SystolicArray2x2 #(
                 temp_c00_2 <= temp_c10;
                 cout_count <= 'd2;
 
-                if (valid_pe01 && valid_pe11) begin
+                if (valid_pe00 && valid_pe11 && a_data_invalid) begin
                     out_valid <= 'd1;
                 end else begin
                     out_valid <= 'd0;
